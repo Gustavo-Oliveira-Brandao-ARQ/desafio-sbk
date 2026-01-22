@@ -52,10 +52,27 @@ Como o conjunto de dados é fixo e carregado em memória na inicialização, as 
 ### Validação e Segurança
 Todos os parâmetros de entrada são validados. O uso do `ValidationPipe` global com `class-validator` garante que tipos incorretos ou campos não permitidos sejam rejeitados antes de atingirem a camada de serviço.
 
-### Contrato da API
-- `GET /processos`: Listagem com filtros (`q`, `tribunal`, `grau`) e paginação (`limit`, `cursor`).
-- `GET /processos/tribunais`: Lista de siglas de tribunais disponíveis.
-- `GET /processos/:numero`: Detalhes completos de um processo.
+### Rotas da API
+
+A documentação interativa (Swagger) está disponível em `/api`.
+
+#### Processos
+- **`GET /processos`**
+  - **Descrição:** Retorna uma lista paginada de processos.
+  - **Parâmetros:**
+    - `q` (opcional): Busca textual (número, partes, classe, assunto).
+    - `tribunal` (opcional): Sigla do tribunal.
+    - `grau` (opcional): G1 ou G2.
+    - `limit` (opcional): Limite de registros (default 20).
+    - `cursor` (opcional): Cursor para próxima página.
+  
+- **`GET /processos/:numeroProcesso`**
+  - **Descrição:** Retorna os detalhes completos de um processo.
+  - **Parâmetro de Rota:** `numeroProcesso` (string).
+
+#### Domínio
+- **`GET /processos/tribunais`**
+  - **Descrição:** Retorna a lista de siglas de tribunais disponíveis na base de dados para uso em filtros.
 
 ---
 
