@@ -10,7 +10,7 @@ export function useProcessos(initialFilters: ProcessoFilters = {}) {
   const [filters, setFilters] = useState<ProcessoFilters>(initialFilters);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const fetchProcessos = useCallback(async (reset = false) => {
+  const fetchProcessos = useCallback(async (reset = false, cursorOverride?: string | null) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
@@ -21,7 +21,7 @@ export function useProcessos(initialFilters: ProcessoFilters = {}) {
     setLoading(true);
     setError(null);
     try {
-      const currentCursor = reset ? undefined : (nextCursor || undefined);
+      const currentCursor = reset ? undefined : (cursorOverride || undefined);
       
       const response = await ProcessosService.getAll({ ...filters, cursor: currentCursor }, controller.signal);
       
@@ -36,7 +36,7 @@ export function useProcessos(initialFilters: ProcessoFilters = {}) {
         setLoading(false);
       }
     }
-  }, [filters, nextCursor]);
+  }, [filters]);
 
   useEffect(() => {
     setNextCursor(null);
@@ -45,7 +45,7 @@ export function useProcessos(initialFilters: ProcessoFilters = {}) {
 
   const loadMore = () => {
     if (nextCursor && !loading) {
-      fetchProcessos(false);
+      fetchProcessos(false, nextCursor);
     }
   };
 

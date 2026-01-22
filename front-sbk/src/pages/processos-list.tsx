@@ -10,10 +10,11 @@ export function ProcessosListPage() {
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">
-        Consulta de Processos
-      </h1>
-
+      <div className="flex items-center gap-3 mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Consulta de Processos</h1>
+        {loading && data.length > 0 && <Loader2 className="h-5 w-5 animate-spin text-blue-600" />}
+      </div>
+      
       <FilterBar filters={filters} onChange={updateFilters} />
 
       {error && (
@@ -22,11 +23,7 @@ export function ProcessosListPage() {
         </div>
       )}
 
-      <div
-        className={`space-y-4 transition-opacity duration-200 ${
-          loading && data.length > 0 ? "opacity-50 pointer-events-none" : ""
-        }`}
-      >
+      <div className="space-y-4">
         {data.length === 0 && !loading && (
           <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed">
             Nenhum processo encontrado com os filtros atuais.
